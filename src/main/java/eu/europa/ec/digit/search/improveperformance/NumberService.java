@@ -40,8 +40,69 @@ public class NumberService {
     }
 
     public Integer findSmallestDuplicateImproved(List<Integer> data) {
-        
-        throw new UnsupportedOperationException("Not implemented.");
+
+        boolean[] duplicates = new boolean[SAMPLE_SIZE];
+
+        int smallestDuplicate = -1;
+        int size = data.size();
+        for (int i = 0; i < size; ++i) {
+
+            int value = data.get(i);
+            if (!duplicates[value]) {
+                duplicates[value] = true;
+            }
+            else {
+                log.info("found duplicate {}", value);
+
+                if (smallestDuplicate < 0) {
+                    smallestDuplicate = value;
+                }
+                else {
+                    smallestDuplicate = Math.min(smallestDuplicate, value);
+                }
+            }
+        }
+
+        return smallestDuplicate < 0 ? null : smallestDuplicate;
+
+/*
+        long start = System.currentTimeMillis();
+        int[] array = new int[data.size()];
+        for (int i = 0; i < array.length; ++i) {
+            array[i] = data.get(i);
+        }
+        Arrays.sort(array);
+        log.info("Sorting {}", System.currentTimeMillis() - start);
+
+        start = System.currentTimeMillis();
+
+        boolean found = false;
+        int smallestDuplicate = Integer.MAX_VALUE;
+        // Protects reporting duplicate twice
+        boolean equal = false;
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] == array[i - 1]) {
+                equal = true;
+            }
+            else if (equal){
+                equal = false;
+                found = true;
+                log.info("found duplicate {}", array[i - 1]);
+                smallestDuplicate = Math.min(smallestDuplicate, array[i - 1]);
+            }
+        }
+
+        // Handle duplicate sequence at the end
+        if (equal) {
+            found = true;
+            log.info("found duplicate {}", array[array.length - 1]);
+            smallestDuplicate = Math.min(smallestDuplicate, array[array.length - 1]);
+        }
+
+        log.info("Finding {}", System.currentTimeMillis() - start);
+
+        return found ? smallestDuplicate : null;
+*/
 
     }
 
